@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{8a0f7542-0863-48fb-b2a2-eb878e677b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{45ab3de4-75af-4bd4-aeaf-5941cfc09a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\SSD1306">
+      <UniqueIdentifier>{3d78e409-394e-4f74-82c0-b0ad1733bfe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\SSD1306">
+      <UniqueIdentifier>{8fe8cda9-baef-48ba-86ee-627c4a5596fb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="utility\Adafruit_Sensor.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\imumaths.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\matrix.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\quaternion.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\util.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\vector.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="drone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2CBus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PID.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qcrecv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\robotics.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="beacon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\Adafruit_GPS.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GPS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\qc_msg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\SSD1306\SSD1306.h">
+      <Filter>Header Files\Utility\SSD1306</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\SSD1306\Adafruit_GFX.h">
+      <Filter>Header Files\Utility\SSD1306</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\SSD1306\Adafruit_SPITFT.h">
+      <Filter>Header Files\Utility\SSD1306</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\SSD1306\Adafruit_SPITFT_Macros.h">
+      <Filter>Header Files\Utility\SSD1306</Filter>
+    </ClInclude>
+    <ClInclude Include="utility\SSD1306\gfxfont.h">
+      <Filter>Header Files\Utility\SSD1306</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="drone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I2CBus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IMU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PWM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qcrecv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="beacon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\Adafruit_GPS.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="GPS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="range.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\SSD1306\SSD1306.cpp">
+      <Filter>Source Files\Utility\SSD1306</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\SSD1306\glcdfont.c">
+      <Filter>Source Files\Utility\SSD1306</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\SSD1306\Adafruit_GFX.cpp">
+      <Filter>Source Files\Utility\SSD1306</Filter>
+    </ClCompile>
+    <ClCompile Include="utility\SSD1306\Adafruit_SPITFT.cpp">
+      <Filter>Source Files\Utility\SSD1306</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

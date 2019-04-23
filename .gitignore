@@ -1,0 +1,11 @@
+Debug/
+Release/
+librobotcontrol/
+Robotics_cape_Installer/
+drone/Debug
+drone/Release
+drone/utility/Adafruit_SSD1306/
+drone/utility/SSD1306/
+drone/utility/Adafruit_GFX_Library/
+UI/vlc/
+UI/libvlc/

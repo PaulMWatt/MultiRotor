@@ -1,0 +1,16 @@
+#!/bin/sh
+
+modprobe uio-pruss
+
+config-pin overlay cape-universaln
+
+config-pin p914 pwm
+config-pin p916 pwm
+config-pin p921 pwm
+config-pin p922 pwm
+
+echo 0 > /sys/class/pwm/export
+echo 1 > /sys/class/pwm/export
+echo 3 > /sys/class/pwm/export
+echo 4 > /sys/class/pwm/export
+

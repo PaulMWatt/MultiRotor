@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo 0 > /sys/class/pwm/pwm0/run
+echo 0 > /sys/class/pwm/pwm1/run
+echo 0 > /sys/class/pwm/pwm3/run
+echo 0 > /sys/class/pwm/pwm4/run
+

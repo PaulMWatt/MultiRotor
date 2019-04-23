@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Control">
+      <UniqueIdentifier>{601d020f-97d1-42ca-beaa-00d364d04995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{c114992a-9733-4ca9-9459-4be6557ece6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Control">
+      <UniqueIdentifier>{a00b1545-2fa4-48b3-b29f-1d83e3cedb02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{954fd43b-94b0-452e-9c85-c1c8de562ab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Control\XBoxCtrl">
+      <UniqueIdentifier>{e1107d6d-5f10-4de7-a331-376fa29a97d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\XBoxCtrl">
+      <UniqueIdentifier>{5b05d7f9-1c77-4eac-a7e2-699252363bd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{93bd365d-b999-44fb-bc22-259748ff1496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\drone">
+      <UniqueIdentifier>{f293512c-422b-4f88-8f6d-81b024a8e129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\drone">
+      <UniqueIdentifier>{049d0df9-7d5c-492b-9786-aea7b1e73416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI\vlc">
+      <UniqueIdentifier>{b6613c7f-4a23-42fb-8536-a32390b147e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI\vlc">
+      <UniqueIdentifier>{265dee35-4d7e-47a1-a768-256c772a0e98}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadCopter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\aa_ellipse.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\AutoGdi.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BitBlender.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\GlossButton.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\OrbButton.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PaintUtility.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_def.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\CmdCtrlDlg.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\BLAssert.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\BLCallback.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\BLCallbackType.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\BLMisc.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\BLTypes.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\compiler.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\inputdefs.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\InputDevice.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\XBoxCtrl\XBoxController.h">
+      <Filter>Header Files\Control\XBoxCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="Control\qcctrl.h">
+      <Filter>Header Files\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\qc_msg.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PIDDlg.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\vlc\VLCWrapper.h">
+      <Filter>Header Files\UI\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\vlc\VLCWrapperImpl.h">
+      <Filter>Header Files\UI\vlc</Filter>
+    </ClInclude>
+    <ClInclude Include=".\UI\VLCDisplay.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\serial.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="QuadCopter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\OrbButton.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\aa_ellipse.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\BitBlender.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\GlossButton.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\CmdCtrlDlg.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Control\qcctrl.cpp">
+      <Filter>Source Files\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PIDDlg.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\vlc\VLCWrapper.cpp">
+      <Filter>Source Files\UI\vlc</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\vlc\VLCWrapperImpl.cpp">
+      <Filter>Source Files\UI\vlc</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\VLCDisplay.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\serial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="QuadCopter.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="QuadCopter.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

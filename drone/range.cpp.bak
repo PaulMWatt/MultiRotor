@@ -1,0 +1,130 @@
+/// @file range.cpp
+///
+/// PRUSS driver program to read data from the ultrasonic range sensor HY-SRF05.
+/// This program loads the PRU binary and maps the memory addresses used to 
+/// interpret the results in user-space.
+///
+/// Adapted from "Exploring BeagleBone" by Derek Molloy
+///
+//  ****************************************************************************
+#include <stdio.h>
+#include <stdlib.h>
+#include <prussdrv.h>
+#include <pruss_intc_mapping.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdint.h>
+
+#include <iostream>
+#include <iomanip>
+
+using std::cout;
+
+namespace 
+{
+
+
+uint32_t  *pru0_data;
+
+const uint32_t k_sample_delay  = 0;
+const uint32_t k_raw_distance  = 1;
+const uint32_t k_sample_count  = 2;
+
+const uint32_t k_PRU_num       = 0;
+
+}
+
+//  ****************************************************************************
+bool initialize_PRU( )
+{
+  tpruss_intc_initdata pruss_intc_initdata = PRUSS_INTC_INITDATA;
+  // Allocate and initialize memory
+  prussdrv_init ( );
+  prussdrv_open (PRU_EVTOUT_0);
+  prussdrv_open (PRU_EVTOUT_1);
+
+  // Map PRU's INTC
+  prussdrv_pruintc_init(&pruss_intc_initdata);
+
+  // Copy data to PRU memory - different way
+  void      *pru0DataMemory;
+  prussdrv_map_prumem(PRUSS0_PRU0_DATARAM, &pru0DataMemory);
+  pru0_data       = reinterpret_cast<uint32_t*>(pru0DataMemory);
+
+  pru0_data[k_sample_delay]   = 2;   // 2 milli seconds between samples
+  pru0_data[k_raw_distance]   = 0;
+  pru0_data[k_sample_count]   = 0;
+
+  return true;
+}
+
+
+//  ****************************************************************************
+bool terminate_PRU( )
+{
+   // Disable PRU and close memory mappings 
+  prussdrv_pru_disable(k_PRU_num);
+  prussdrv_exit();
+
+  return true;
+}
+
+//  ****************************************************************************
+void *updateRangeCalculations(void *value)
+{
+  cout << "Distance reported by ultrasonic sensor:\n\n";
+
+  do
+  {
+    prussdrv_pru_wait_event (PRU_EVTOUT_1);
+     
+    uint32_t raw   = pru0_data[k_raw_distance];
+
+    float inches   = (raw / float(100 * 148));
+    float cm       = (raw / float(100 * 58));
+
+    cout  << "\r" << std::setw(8) << inches   << " in"
+          << "\t" << std::setw(8) << cm       << " cm";
+
+    prussdrv_pru_clear_event (PRU_EVTOUT_1, PRU0_ARM_INTERRUPT);
+
+  }
+  while (1);
+}
+
+
+//  ****************************************************************************
+void start_range_sensor()
+{
+  initialize_PRU();
+
+  // Load and execute binary on PRU
+  prussdrv_exec_program (k_PRU_num, "./range.bin");
+
+  pthread_t thread;
+  if (pthread_create(&thread, NULL, &updateRangeCalculations, NULL))
+  {
+    cout << "Failed to create range calculation thread.\n";
+  }
+
+}
+
+//  ****************************************************************************
+void shutdown_range_sensor()
+{
+  terminate_PRU();
+}
+
+
+//  ****************************************************************************
+/// Reports the measured range in meters.
+///
+float get_range()
+{
+  uint32_t raw   = pru0_data[k_raw_distance];
+  float cm       = (raw / float(100 * 58));
+
+  return cm / 1000.0f;
+}
+
+

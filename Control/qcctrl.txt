@@ -1,0 +1,280 @@
+/// @file qcctrl.cpp
+/// 
+/// Captures controller input for transmission to the drone.
+///
+//  ****************************************************************************
+
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <winsock2.h>
+
+#pragma comment(lib, "Ws2_32.lib")
+
+#include "XBoxController.h"
+
+
+
+
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+using pbl::input::win32::xbox::Controller;
+using pbl::input::win32::xbox::k_xboxCtrl_1;
+
+
+//  ****************************************************************************
+struct QCopterTrim
+{
+  int8_t   roll;
+  int8_t   pitch;
+  int8_t   yaw;
+  int8_t   thrust;
+};
+
+
+//  ****************************************************************************
+struct QCopter
+{
+  int16_t    roll;
+  int16_t    pitch;
+  int16_t    yaw;
+  int16_t    thrust;
+
+  QCopterTrim trim;
+};
+
+
+//  ****************************************************************************
+enum TrimMode
+{
+  k_trim_none   = 0,
+  k_trim_roll   = 1,
+  k_trim_pitch  = 2,
+  k_trim_yaw    = 3,
+  k_trim_thrust = 4,
+  k_trim_max    
+};
+
+enum TrimAdjust
+{
+  k_decrement = -1,
+  k_increment = 1
+};
+
+const int8_t k_max_trim = 127;
+const int8_t k_min_trim = -128;
+
+//  ****************************************************************************
+void AdjustTrim(TrimMode trim_mode, QCopterTrim &trim, TrimAdjust adjust)
+{
+  int8_t *param = nullptr;
+
+  switch (trim_mode)
+  {
+  case k_trim_roll:
+    param = &trim.roll;
+    break;
+  case k_trim_pitch:
+    param = &trim.pitch;
+    break;
+  case k_trim_yaw:
+    param = &trim.yaw;
+    break;
+  case k_trim_thrust:
+    param = &trim.thrust;
+    break;
+  default:
+    // no operation.
+    return;
+  }
+
+  // Adjust the value appropriately,
+  // without exceeding the boundaries.
+  if ( adjust == k_increment
+    && *param != k_max_trim)
+  {
+    (*param)++;
+  }
+  else if ( adjust == k_decrement
+         && *param != k_min_trim)
+  {
+    (*param)--;
+  }
+}
+
+
+//  ****************************************************************************
+void ProcessTrim(Controller& ctrl, QCopterTrim &trim)
+{
+  static TrimMode trim_mode     = k_trim_none;
+  static bool is_prev_pressed   = false;        // Mapped to X button
+  static bool is_next_pressed   = false;        // Mapped to B button
+
+  // Process each of the trim buttons.
+  // They are organized in a priority order so only 
+  // one button can operate at a time.
+  if (is_prev_pressed != ctrl.XPressed())
+  {
+    // If the button is being released, change the mode.
+    if (is_prev_pressed)
+    {
+      trim_mode = TrimMode((trim_mode + k_trim_max - 1) % k_trim_max);
+
+      cout << "Trim Mode: " << trim_mode << endl;
+    }
+
+    is_prev_pressed = !is_prev_pressed;
+  }
+  else if (is_next_pressed != ctrl.BPressed())
+  {
+    // If the button is being released, change the mode.
+    if (is_next_pressed)
+    {
+      trim_mode = TrimMode((trim_mode + k_trim_max + 1) % k_trim_max);
+
+      cout << "Trim Mode: " << trim_mode << endl;
+    }
+
+    is_next_pressed = !is_next_pressed;     
+  }
+  else 
+  {
+    if (ctrl.YPressed())
+    {
+      AdjustTrim(trim_mode, trim, k_increment);
+    }
+    else if (ctrl.APressed())
+    {
+      AdjustTrim(trim_mode, trim, k_decrement);
+    }
+  }
+}
+
+
+//  ****************************************************************************
+void ProcessInput(Controller& ctrl, QCopter &data)
+{
+  static QCopterTrim trim = {0};
+
+  // Capture the latest state for the controller.
+  ctrl.Refresh();
+
+  // Make adjustments for the trim
+  ProcessTrim(ctrl, trim);
+
+  // Calculate the control values.
+  data.roll       = ctrl.LeftThumbX();
+  data.pitch      = ctrl.LeftThumbY();
+  data.yaw        = ctrl.LeftTrigger() - ctrl.RightTrigger();
+  data.thrust     = ctrl.RightThumbX();
+
+  ::memcpy(&data.trim, &trim, sizeof(trim));
+
+
+  // Display the current values locally
+  // Only print out every 25th sample:
+  static uint32_t sample = 0;
+  if (0 == sample % 25)
+  {
+    cout  << "  Roll: "         << data.roll
+          << ", Pitch: "        << data.pitch
+          << ", Yaw: "          << data.yaw
+          << ", Thrust: "       << data.thrust
+          << ", Trim Roll: "    << (int)data.trim.roll
+          << ", Trim Pitch: "   << (int)data.trim.pitch
+          << ", Trim Yaw: "     << (int)data.trim.yaw
+          << ", Trim Thrust: "  << (int)data.trim.thrust
+          << endl;
+  }
+
+  sample++;
+}
+
+//  ****************************************************************************
+void SendCommands(SOCKET conn, QCopter &data)
+{
+  // Convert to network byte-order.
+  // The trim values are a single byte and 
+  // do not need to be converted.
+  QCopter data_out = {0};
+  data_out.roll    = htons(data.roll);
+  data_out.pitch   = htons(data.pitch);
+  data_out.yaw     = htons(data.yaw);
+  data_out.thrust  = htons(data.thrust);
+  ::memcpy(&data_out.trim, &data.trim, sizeof(data.trim));
+
+  // Send the datagram to the QC's control board.
+  sockaddr_in addr = {0};
+
+  addr.sin_family           = AF_INET;
+  addr.sin_addr.S_un.S_addr = htonl(0xC0A80268);
+  addr.sin_port             = htons(8100);
+
+  int result = sendto(conn, 
+                      (const char*)(&data), 
+                      sizeof(data), 
+                      0,
+                      (const sockaddr*)(&addr), 
+                      sizeof(addr));
+  if (result < 0)
+  {
+    cout << "Error: " << result << " occurred attempting to send command." << endl;
+  }
+}
+
+
+//  ****************************************************************************
+int main()
+{
+  // Create an instance of the XBOX controller
+  Controller ctrl;
+
+  if (!ctrl.RegisterDevice(k_xboxCtrl_1))
+  {
+    cout  << "Could not detect controller.\n"
+          << "The controller application will now exit." << endl;
+    return -1;
+  }
+
+  // Initialize WinSock
+  WSADATA wsaData;
+
+  int result = WSAStartup(MAKEWORD(2,2), &wsaData);
+  if (result != 0) 
+  {
+    printf("WSAStartup failed with error: %d\n", result);
+    return -1;
+  }
+
+  SOCKET conn = socket(AF_INET, SOCK_DGRAM, 0);
+  if (conn < 0) 
+  {
+	  cout << "cannot create socket" << endl;
+	  return -1;
+  }
+
+
+  // Process input at 100Hz.
+  while (true)
+  {
+    QCopter data = {0};
+
+    ProcessInput(ctrl, data);
+    SendCommands(conn, data);
+
+    ::Sleep(10);
+  }
+
+
+  // Free resources.
+  closesocket(conn);
+  conn = INVALID_SOCKET;
+
+  WSACleanup();
+
+  return 0;
+}
+
