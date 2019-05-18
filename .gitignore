@@ -9,3 +9,5 @@ drone/utility/SSD1306/
 drone/utility/Adafruit_GFX_Library/
 UI/vlc/
 UI/libvlc/
+
+QuadCopter.aps

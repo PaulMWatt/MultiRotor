@@ -68,18 +68,18 @@ Drone *p_drone_instance = nullptr;
 ofstream g_outfile;
 
 // TODO: Need to move these values into configurable settings loaded from a file.
-float g_hover_level             = 0.0f;
+float g_hover_level             = 0.1f;
 
 float g_roll_Kp                 = 1.25; 
 float g_roll_Ki                 = 0.325;
 float g_roll_Kd                 = 0.077; 
-float g_roll_scalar             = 0.0;
+float g_roll_scalar             = 1.0;
 float g_roll_windup_limit       = to_radians(10);
 
 float g_pitch_Kp                = 1.08;
 float g_pitch_Ki                = 0.65;
 float g_pitch_Kd                = 0.1625;
-float g_pitch_scalar            = 0.0;
+float g_pitch_scalar            = 1.0;
 float g_pitch_windup_limit      = to_radians(10);
 
 float g_roll_rate_Kp            = 0.9678; 
@@ -87,14 +87,14 @@ float g_roll_rate_Ki            = 1.526;
 float g_roll_rate_Kd            = 0.02405;
 float g_roll_rate_windup_limit  = to_radians(20);
 float g_roll_rate_cutoff        = 41.0;
-float g_roll_rate_scalar        = 0.0;
+float g_roll_rate_scalar        = 1.0;
 
 float g_pitch_rate_Kp           = 0.375;
 float g_pitch_rate_Ki           = 1.545;
 float g_pitch_rate_Kd           = 0.0225;
 float g_pitch_rate_windup_limit = to_radians(20);
 float g_pitch_rate_cutoff       = 41.0;
-float g_pitch_rate_scalar       = 0.0;
+float g_pitch_rate_scalar       = 1.0;
 
 float g_yaw_Kp                  = 0.825;
 float g_yaw_Ki                  = 0.5;
@@ -105,7 +105,7 @@ float g_yaw_scalar              = 1.0;
 
 
 float g_motor_constraint_min    = 0.0f;
-float g_motor_constraint_max    = 0.3f;
+float g_motor_constraint_max    = 1.0f;
 
 
 // Constants *******************************************************************
@@ -685,19 +685,18 @@ void Drone::update( )
 
   // TODO: Address when the drone is on the ground, do not let the PID integrals wind-up.
   //       For now, do not update with zero thrust.
-  //if (m_throttle == 0.0f)
-  //{
-  //  clear_motor_levels();
-  //  return;
-  //}
-
-  // TODO: Enable once PID Tuning is complete
-  //else if (m_throttle < g_hover_level)
-  //{
-  //  // TODO: This is a make shift adjustment until other components are tuned to keep the integral from winding up.
-  //  m_roll.reset_integral();
-  //  m_pitch.reset_integral();
-  //}
+  if (m_throttle == 0.0f)
+  {
+    clear_motor_levels();
+    return;
+  }
+  else if (m_throttle < g_hover_level)
+  {
+    // This is a make shift adjustment until other components 
+    // are tuned to keep the integral from winding up.
+    m_roll_stabilize.reset_integral();
+    m_pitch_stabilize.reset_integral();
+  }
 
 
   uint64_t timestamp  = timestamp_ms( );
@@ -719,15 +718,15 @@ void Drone::update( )
   //  cout << " Range: " << m_range_altitude << endl;
   //}
 
-  //double distance = distance_from_base(cur);
-  //if (distance > 20.0)
-  //{
-  //  // Perform an emergency action to prevent the drone from drifting away.
-  //  // We force the throttle down to 25%.
-  //  cout << "ALERT!!! The drone has moved outside of the test area (" << distance << ")" << endl;
+  double distance = distance_from_base(cur);
+  if (distance > 20.0)
+  {
+    // Perform an emergency action to prevent the drone from drifting away.
+    // We force the throttle down to 25%.
+    cout << "ALERT!!! The drone has moved outside of the test area (" << distance << ")" << endl;
 
-  //  m_throttle = 0.25;
-  //}
+    m_throttle = 0.5 * g_hover_level;
+  }
 
   // Safety check the stability of the drone
   m_critical_angle = (roll( )  >  k_critical_limit
@@ -788,14 +787,6 @@ void Drone::update( )
   m_last_state.orientation.pitch_rate = to_int16(normalize_pitch_angle(pitch_rate( )));
   m_last_state.orientation.pitch      = to_int16(normalize_pitch_angle(pitch( )));
   m_last_state.orientation.yaw        = to_int16(normalize_yaw_angle(yaw( )));
-
-
-  // TODO: During testing prevent the system from commanding the motors when thrust is set to zero.
-  if (m_throttle == 0.0f)
-  {
-    clear_motor_levels( );
-    return;
-  }
 
 
   if (!is_critical( )
